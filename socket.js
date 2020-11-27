@@ -1,9 +1,14 @@
 var express = require('express');
 var app = express();
 const PORT = process.env.PORT;
+const http = require('httpServer');
 
-var http = require('http').Server(app);
-var io = require('socket.io')(http, {
+setInterval(function () {
+  http.get("https://recorder-websocket-server.herokuapp.com");
+}, 600000);
+
+var httpServer = require('httpServer').Server(app);
+var io = require('socket.io')(httpServer, {
   origin: '*'
 });
 
@@ -19,6 +24,6 @@ io.on('connection', function (socket) {
   });
 });
 
-http.listen(PORT, function () {
+httpServer.listen(PORT, function () {
   console.log('Heroku Server On');
 });
