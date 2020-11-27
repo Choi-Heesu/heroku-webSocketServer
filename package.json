@@ -1,0 +1,25 @@
+{
+  "name": "heroku-webSocketServer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node socket.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Choi-Heesu/heroku-webSocketServer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Choi-Heesu/heroku-webSocketServer/issues"
+  },
+  "homepage": "https://github.com/Choi-Heesu/heroku-webSocketServer#readme",
+  "dependencies": {
+    "express": "^4.10.2",
+    "socket.io": "^1.1.0"
+  }
+}
