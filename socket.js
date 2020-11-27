@@ -20,5 +20,5 @@ io.on('connection', function (socket) {
 });
 
 http.listen(PORT, function () {
-  console.log('backend listening on *:80');
+  console.log('Heroku Server On');
 });
