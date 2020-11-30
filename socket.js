@@ -28,7 +28,7 @@ setInterval(function () {
 var httpServer = http.Server(app);
 var io = require('socket.io')(httpServer, {
   cors: {
-    origin: "*",
+    origin: "https://192.168.9.90:3000",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
