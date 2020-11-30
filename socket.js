@@ -1,4 +1,5 @@
 const express = require('express');
+//const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT;
 const http = require('http');
@@ -17,6 +18,8 @@ app.use(function (req, res, next) {
   next();
 });
 
+//app.use(cors());
+
 setInterval(function () {
   http.get("https://recorder-websocket-server.herokuapp.com");
   console.log("Awake Server");
@@ -25,7 +28,7 @@ setInterval(function () {
 var httpServer = http.Server(app);
 var io = require('socket.io')(httpServer, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:3000",
     credentials: true
   }
 });
