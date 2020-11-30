@@ -27,6 +27,9 @@ var httpServer = http.Server(app);
 var io = require('socket.io')(httpServer, {
   cors: {
     origin: '*',
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
   }
 });
 
