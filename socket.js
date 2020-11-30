@@ -28,7 +28,7 @@ setInterval(function () {
 var httpServer = http.Server(app);
 var io = require('socket.io')(httpServer, {
   cors: {
-    origin: "https://sender-to-websocket.herokuapp.com",
+    origin: "https://192.168.9.90",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
