@@ -5,6 +5,7 @@ const http = require('http');
 
 setInterval(function () {
   http.get("https://recorder-websocket-server.herokuapp.com");
+  console.log("Awake Server");
 }, 600000);
 
 var httpServer = http.Server(app);
@@ -13,14 +14,14 @@ var io = require('socket.io')(httpServer, {
 });
 
 io.on('connection', function (socket) {
-  console.log('websocket connected');
+  console.log('Websocket connected');
   socket.on('blob', function (data) {
     io.emit('return', data);
     console.log(data);
   });
 
   socket.on('disconnect', function () {
-    console.log("socket disconnected!");
+    console.log("Websocket disconnected!");
   });
 });
 
