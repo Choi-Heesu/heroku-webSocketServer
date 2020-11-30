@@ -9,9 +9,7 @@ setInterval(function () {
 }, 600000);
 
 var httpServer = http.Server(app);
-var io = require('socket.io')(httpServer, {
-  origin: '*'
-});
+var io = require('socket.io')(httpServer);
 
 io.on('connection', function (socket) {
   console.log('Websocket connected');
