@@ -24,7 +24,11 @@ setInterval(function () {
 }, 600000);
 
 var httpServer = http.Server(app);
-var io = require('socket.io')(httpServer);
+var io = require('socket.io')(httpServer, {
+  cors: {
+    origin: '*',
+  }
+});
 
 io.on('connection', function (socket) {
   console.log('Websocket connected');
