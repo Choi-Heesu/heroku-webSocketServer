@@ -26,8 +26,9 @@ setInterval(function () {
 }, 600000);
 
 var httpServer = http.Server(app);
-var io = require('socket.io')(httpServer);
-io.set('origins', '*:*');
+var io = require('socket.io')(httpServer, {
+  transport : ['websocket']
+});
 
 io.on('connection', function (socket) {
   console.log('Websocket connected');
