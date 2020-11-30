@@ -1,5 +1,7 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT;
+const http = require('http');
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
@@ -14,9 +16,6 @@ app.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
-
-const PORT = process.env.PORT;
-const http = require('http');
 
 setInterval(function () {
   http.get("https://recorder-websocket-server.herokuapp.com");
