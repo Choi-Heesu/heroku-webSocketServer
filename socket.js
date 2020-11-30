@@ -1,6 +1,6 @@
 const express = require('express');
-//const cors = require('cors');
-const app = express();
+const cors = require('cors');
+//const app = express();
 const PORT = process.env.PORT;
 const http = require('http');
 
@@ -16,19 +16,19 @@ const http = require('http');
   res.setHeader('Access-Control-Allow-Credentials', true);
   // Pass to next layer of middleware
   next();
-});
+});*/
 
-app.use(cors());*/
+//app.use(cors());
 
-setInterval(function () {
+/*setInterval(function () {
   http.get("https://recorder-websocket-server.herokuapp.com");
   console.log("Awake Server");
-}, 600000);
+}, 600000);*/
 
 var httpServer = http.Server(app);
 var io = require('socket.io')(httpServer, {
   cors: {
-    origin: "https://192.168.9.90:5000",
+    origin: "*",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
@@ -45,6 +45,10 @@ io.on('connection', function (socket) {
   socket.on('disconnect', function () {
     console.log("Websocket disconnected!");
   });
+});
+
+io.on('error',function(e){
+	console.log('socket.io error:'+e);
 });
 
 httpServer.listen(PORT, function () {
