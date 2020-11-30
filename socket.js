@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT;
 const http = require('http');
 
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
   // Request methods you wish to allow
@@ -18,7 +18,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-//app.use(cors());
+app.use(cors());*/
 
 setInterval(function () {
   http.get("https://recorder-websocket-server.herokuapp.com");
@@ -27,7 +27,17 @@ setInterval(function () {
 
 var httpServer = http.Server(app);
 var io = require('socket.io')(httpServer, {
-  transport : ['websocket']
+  origins: ["*"],
+
+  handlePreflightRequest: (req, res) => {
+    res.writeHead(200, {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,POST",
+      "Access-Control-Allow-Headers": "my-custom-header",
+      "Access-Control-Allow-Credentials": true
+    });
+    res.end();
+  }
 });
 
 io.on('connection', function (socket) {
