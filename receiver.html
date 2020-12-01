@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta id="theme-color" name="theme-color" content="#fff">
+
+    <base target="_blank">
+
+    <title>Client 2</title>
+    <style>
+        button {
+            margin: 0 3px 10px 0;
+            width: 99px;
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+
+        button:last-of-type {
+            margin: 0;
+        }
+
+        p.borderBelow {
+            margin: 0 0 20px 0;
+            padding: 0 0 20px 0;
+        }
+
+        video {
+            height: 232px;
+            margin: 0 12px 20px 0;
+            vertical-align: top;
+            width: calc(20em - 10px);
+        }
+
+        video:last-of-type {
+            margin: 0 0 20px 0;
+        }
+
+        @media screen and (max-width: 500px) {
+            button {
+                font-size: 0.8em;
+                width: calc(33% - 5px);
+            }
+        }
+
+        @media screen and (max-width: 720px) {
+            video {
+                height: calc((50vw - 48px) * 3 / 4);
+                margin: 0 10px 10px 0;
+                width: calc(50vw - 48px);
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+</head>
+
+<body>
+
+    <div id="container">
+        <h1>Client 2</h1>
+        <video id="socket" autoplay muted></video>
+    </div>
+
+    <script>
+        'use strict';
+
+        var socket = io.connect('https://recorder-websocket-server.herokuapp.com', {transports: ['websocket']});
+        var mediaSource = new MediaSource();
+        var mediaBuffer;
+        var delayQueue = [];
+        var duration;
+
+        var socketVideo = document.querySelector('video#socket');
+
+        mediaSource.addEventListener('sourceopen', function (e) {
+            // var mimeCodec = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';
+            var mimeCodec = 'video/webm; codecs="vp8"';
+            mediaBuffer = mediaSource.addSourceBuffer(mimeCodec);
+            console.log("sourceoepn!!!");
+            mediaBuffer.addEventListener('updateend', function () {
+                if (delayQueue.length > 0 && !mediaBuffer.updating) {
+                    mediaBuffer.appendBuffer(delayQueue.shift());
+                    //console.log('delay Buffer fixed!!');
+                }
+            });
+        }, false);
+
+        socketVideo.src = window.URL.createObjectURL(mediaSource);
+
+        socket.on('connect', function () {
+            console.log('Socket Connected');
+        });
+
+        socket.on('disconnect', function () {
+            console.log('Socket Disconnected');
+        });
+
+        socket.on('connect_error', err => handleErrors(err));
+        socket.on('connect_failed', err => handleErrors(err));
+
+        socket.on('return', function (data) {
+            if (mediaSource.readyState == 'open') {
+                var arrayBuffer = new Uint8Array(data).slice(1);
+                if (!mediaBuffer.updating && delayQueue.length == 0) {
+                    mediaBuffer.appendBuffer(arrayBuffer);
+                } else {
+                    delayQueue.push(arrayBuffer);
+                }
+            }
+        });
+
+        function handleErrors(e){
+            console.log(e);
+        }
+    </script>
+
+</body>
+
+</html>
