@@ -37,6 +37,11 @@ var io = require('socket.io')(httpServer, {
 
 io.on('connection', function (socket) {
   console.log('Websocket connected');
+  
+  socket.on('hello', function (data) {
+    io.emit('hello', data);
+  });
+
   socket.on('blob', function (data) {
     io.emit('return', data);
     console.log(data);
